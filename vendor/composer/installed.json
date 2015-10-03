@@ -1,31 +1,25 @@
 [
     {
-        "name": "slim/slim",
-        "version": "2.6.2",
-        "version_normalized": "2.6.2.0",
+        "name": "psr/log",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/slimphp/Slim.git",
-            "reference": "20a02782f76830b67ae56a5c08eb1f563c351a37"
+            "url": "https://github.com/php-fig/log.git",
+            "reference": "fe0936ee26643249e916849d48e3a51d5f5e278b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/slimphp/Slim/zipball/20a02782f76830b67ae56a5c08eb1f563c351a37",
-            "reference": "20a02782f76830b67ae56a5c08eb1f563c351a37",
+            "url": "https://api.github.com/repos/php-fig/log/zipball/fe0936ee26643249e916849d48e3a51d5f5e278b",
+            "reference": "fe0936ee26643249e916849d48e3a51d5f5e278b",
             "shasum": ""
         },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "suggest": {
-            "ext-mcrypt": "Required for HTTP cookie encryption"
-        },
-        "time": "2015-03-08 18:41:17",
+        "time": "2012-12-21 11:40:51",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-0": {
-                "Slim": "."
+                "Psr\\Log\\": ""
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -34,17 +28,67 @@
         ],
         "authors": [
             {
-                "name": "Josh Lockhart",
-                "email": "info@joshlockhart.com",
-                "homepage": "http://www.joshlockhart.com/"
+                "name": "PHP-FIG",
+                "homepage": "http://www.php-fig.org/"
             }
         ],
-        "description": "Slim Framework, a PHP micro framework",
-        "homepage": "http://github.com/codeguy/Slim",
+        "description": "Common interface for logging libraries",
         "keywords": [
-            "microframework",
-            "rest",
-            "router"
+            "log",
+            "psr",
+            "psr-3"
+        ]
+    },
+    {
+        "name": "katzgrau/klogger",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/katzgrau/KLogger.git",
+            "reference": "f5bdaece0efe385ab0cec9e5a65ffe88e23e7f1a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/katzgrau/KLogger/zipball/f5bdaece0efe385ab0cec9e5a65ffe88e23e7f1a",
+            "reference": "f5bdaece0efe385ab0cec9e5a65ffe88e23e7f1a",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3",
+            "psr/log": "1.0.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "4.0.*"
+        },
+        "time": "2015-09-21 18:10:26",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Katzgrau\\KLogger\\": "src/"
+            },
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Kenny Katzgrau",
+                "email": "katzgrau@gmail.com"
+            },
+            {
+                "name": "Dan Horrigan",
+                "email": "dan@dhorrigan.com"
+            }
+        ],
+        "description": "A Simple Logging Class",
+        "keywords": [
+            "logging"
         ]
     }
 ]
