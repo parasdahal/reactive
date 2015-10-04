@@ -15,12 +15,12 @@ namespace socialplus;
 /**
  * This class is the configuration class for the development environment.
  */
-class Conf
+class Config
 {
-	const DB_HOST='localhost';
-	const DB_USER='root';
-	const DB_PASSWORD='abc123';
-	const DB_DATABASE='socialplus';
+	public $DB_HOST='localhost';
+	public $DB_USER='root';
+	public $DB_PASSWORD='P@ssw0rd';
+	public $DB_DATABASE='socialplus';
 	
 }
 
