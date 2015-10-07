@@ -34,4 +34,24 @@
 namespace socialplus\core;
 require_once('DB.php');
 
-?>
+class Vote
+{
+	private $DB;
+
+	public function __construct()
+	{
+		//Establish connection to the database
+		$this->DB= DB::getInstance();
+	}
+
+	public function GetVotes($postid)
+	{
+		$comments=$this->DB->GetPostVotes($postid);
+		return $comments;
+	}
+
+	public function AddVote($postid)
+	{
+		
+	}
+}

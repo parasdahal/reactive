@@ -34,4 +34,24 @@
 namespace socialplus\core;
 require_once('DB.php');
 
-?>
+class Comment
+{
+	private $DB;
+
+	public function __construct()
+	{
+		//Establish connection to the database
+		$this->DB= DB::getInstance();
+	}
+
+	public function GetComments($postid)
+	{
+		$comments=$this->DB->GetPostComments($postid);
+		return $comments;
+	}
+
+	public function AddComment($comment)
+	{
+
+	}
+}

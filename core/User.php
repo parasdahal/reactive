@@ -43,13 +43,19 @@ class User{
 	 * @var array
 	 */
 	public $user_login_error=array();
-	
+
 	/**
-	 * Array Containing Messages related to the signup error
+	 * Array Containing Messages related to the following error
 	 * @var array
 	 */
-	public $user_signup_error=array();
-
+	public $user_follow_error=array();
+	
+	/**
+	 * Array Containing Messages related to the unfollowing error
+	 * @var array
+	 */
+	public $user_unfollow_error=array();
+	
 	/**
 	 * Array with data from Users table retrieved after successful login
 	 * @var array
@@ -131,10 +137,8 @@ class User{
 	 * It sanitizes information from login form, queries database for user data, creates errors
 	 * and starts session info
 	 * 
-	 * @param string $username Username of the user from the login form
-	 * @param string $password Password of the user
-	 * @param int $remember Value of remember checkbox from the login form
-	 *
+	 * @param array $login_data array with login data
+	 * 
 	 * @return Boolean $status True if login successful, array with login error messages if false
 	 */
 	public function Login($login_data)
@@ -181,6 +185,7 @@ class User{
 
 	}
 
+
 	/**
 	 *Logs the user out by destroying the session data and usetting the cookie
 	 *
@@ -207,89 +212,109 @@ class User{
 	}
 
 	/**
-	 * Validates the signup data in the server side. Validates email and username string. Then also
-	 * checks if they are already used in the database. Stores errors in the the errors array.
-	 * 
-	 * @param array $signup_data Array with the data from the signup form
-	 *
-	 * @return Boolean True if no errors, false if errors in validation
+	 * Follows the user whose user_id is specified in the argument
+	 * @param int $user_id User id of the user to follow
+	 * @return Boolean True if followed, Array with error messages otherwise
 	 */
-	private function SignupValidate($signup_data)
+	public function Follow($user_id)
 	{
-		if(strlen($signup_data['username'])<4 || strlen($signup_data['username'])>30)
-		{
-			$this->user_signup_error[]='Your username must be between 3 and 30 characters!';
+		//first check if the id we try to follow exists
+		if($this->DB->CheckIfIdExists($user_id))
+		{	
+
+			//find id of the current user
+			$this_user_id=$this->user_data['id'];
+
+			//check if we are trying to follow ourself
+			if($user_id==$this_user_id)
+			{
+				$this->user_follow_error[]='You are trying to follow yourself!';
+			}
+			else{
+					//check if user already follows the other user
+					if($this->DB->CheckIfFollows($this_user_id,$user_id))
+					{
+						$this->user_follow_error[]='You already follow the user!';
+					}
+					else{
+						//Nope. now follow the user
+						$followed=$this->DB->StartFollow($this_user_id,$user_id);
+						if($followed==false)
+							$this->user_follow_error[]='Could not follow!'; //something went wrong
+					}
+			}
 		}
-
-		if(preg_match('/[^a-z0-9\-\_\.]+/i',$signup_data['username']))
-		{
-			$this->user_signup_error[]='Your username contains invalid characters!';
+		else{
+			//Other user id doesnt exist in the database
+			$this->user_follow_error[]='The user you are trying to follow doesnt exist!';
 		}
-
-
-		if($this->DB->CheckIfUsernameExists($signup_data['username']))
+		//If any error did not occur during following
+		if(empty($this->user_follow_error))
 		{
-			$this->user_signup_error[]='This username is already taken!';	
-		}
-
-		if(!filter_var($signup_data['email'],FILTER_VALIDATE_EMAIL))
-		{
-			$this->user_signup_error[]='Your email is not valid!';
-		}
-
-		if($this->DB->CheckIfEmailExists($signup_data['email']))
-		{
-			$this->user_signup_error[]='This email is already in use!';	
-		}
-
-		if(strlen($signup_data['password'])<6)
-		{
-			$this->user_signup_error[]='Your password must be at least 6 characters!';
-		}
-
-		if(empty($this->user_signup_error))
-			return true;
-		return false;
-
-	}
-
-	/**
-	 * Cleans the username and email strings from the signup form.
-	 * 
-	 * @param array $signup_data Array with the data from the signup form.
-	 *
-	 * @return array $signup_data Same parameter array with clean user and email
-	 */
-	private function SignupClean($signup_data)
-	{
-		$signup_data['username']=trim($signup_data['username']);
-		$signup_data['email']=filter_var(trim($signup_data['email']), FILTER_SANITIZE_EMAIL);
-		return $signup_data;
-	}
-
-	/**
-	 * Signsup a user by cleaning the data from registration form, then validating the data
-	 * If no errors are present, it will create the user in the database, otherwise returns
-	 * array with signup error messages
-	 * 
-	 * @param array $signup_data Array containing username, email and password
-	 *
-	 * @return Boolean True if User is registered, array with error messages otherwise
-	 */
-	public function Signup($signup_data)
-	{
-		//Clean the form data, remove whitespaces and other chars
-		$signup_data=$this->SignupClean($signup_data);
-		//if the information submitted is valid
-		if($this->SignupValidate($signup_data)){
-			//create new user in the database
-			$create=$this->DB->CreateUser($signup_data);
 			return true;
 		}
-		else
-			return $this->user_signup_error;
-
+		else return $this->user_follow_error;
 	}
+
+
+	/**
+	 * Unfollows the user whose user_id is specified in the argument
+	 * @param int $user_id User id of the user to follow
+	 * @return Boolean True if unfollowed, array with error messages otherwise
+	 */
+	public function Unfollow($user_id)
+	{
+		//first check if the id we try to follow exists
+		if($this->DB->CheckIfIdExists($user_id))
+		{	
+
+			//find id of the current user
+			$this_user_id=$this->user_data['id'];
+
+			//check if we are trying to unfollow ourself
+			if($user_id==$this_user_id)
+			{
+				$this->user_unfollow_error[]='You are trying to unfollow yourself!';
+			}
+			else{
+					//check if user already follows the other user
+					if(!$this->DB->CheckIfFollows($this_user_id,$user_id))
+					{
+						$this->user_unfollow_error[]='You don\'t follow the user!';
+					}
+					else{
+						//Nope. now follow the user
+						$followed=$this->DB->StartUnfollow($this_user_id,$user_id);
+						if($followed==false)
+							$this->user_unfollow_error[]='Could not unfollow!'; //something went wrong
+					}
+			}
+		}
+		else{
+			//Other user id doesnt exist in the database
+			$this->user_unfollow_error[]='The user you are trying to unfollow doesnt exist!';
+		}
+		//If any error did not occur during following
+		if(empty($this->user_unfollow_error))
+		{
+			return true;
+		}
+		else return $this->user_unfollow_error;
+	}
+
+	public function GetFollowingUsers()
+	{
+		$following=$this->DB->FollowingList($this->user_data['id']);
+		return $following;
+	}
+
+	public function GetFollowers()
+	{
+		$followers=$this->DB->FollowerList($this->user_data['id']);
+		return $followers;
+	}
+	
+
 
 }
 

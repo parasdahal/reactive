@@ -151,8 +151,13 @@ class DB
             while($row = $status->fetch_assoc()) {
                 $rows[] = $row;
             }
-            if(isset($rows))
-                return $rows;
+            $meta=array();
+            foreach($rows as $key => $value)
+            {
+                $meta[$value['meta']]=$value['value'];
+            }
+            if(isset($meta))
+                return $meta;
             else return false;    
         }
     }
@@ -211,6 +216,167 @@ class DB
         else
             return true;
 
+    }
+    /**
+     * Checks if username in the parameter exists in the user table
+     * @param int $id User ID
+     * @return Boolean True if Exists, false otheriwse
+     */
+    public function CheckIfIdExists($id)
+    {
+        $sql = 'SELECT * FROM sp_users WHERE id='.$id.'';
+        $status = $this->mysqli->query($sql);
+        if($status->num_rows!==0)
+            return true;
+        else
+            return false;
+
+    }
+
+    /**
+     * Checks if one userid follows the other
+     * @param int $id1 User id of one that follows
+     * @param int $id2 User id of one that is being followed
+     * 
+     * @return Boolean True if Follows, false otheriwse
+     */
+    public function CheckIfFollows($id1,$id2)
+    {
+        $sql = 'SELECT * FROM sp_follows WHERE user_id_1='.$id1.' AND user_id_2='.$id2.'';
+        $status = $this->mysqli->query($sql);
+        if($status->num_rows!==0)
+            return true;
+        else
+            return false;
+
+    }
+
+    public function StartFollow($userid1,$userid2)
+    {
+        $sql = 'INSERT INTO sp_follows(user_id_1,user_id_2,type,followed_on) VALUES('.$userid1.','.$userid2.',1,NOW())';
+        $status = $this->mysqli->query($sql);
+        if($status==false)
+            return false;
+        else return true;
+
+    }
+
+    public function StartUnfollow($userid1,$userid2)
+    {
+        $sql = 'DELETE FROM sp_follows WHERE user_id_1='.$userid1.' AND user_id_2='.$userid2.' ';
+        $status = $this->mysqli->query($sql);
+        if($status==false)
+            return false;
+        else return true;
+
+    }
+
+    public function FollowingList($userid)
+    {
+        $sql = 'SELECT user_id_2 FROM sp_follows WHERE user_id_1='.$userid.'';
+        $status = $this->mysqli->query($sql);
+        if($status->num_rows!==0)
+        {   
+            while($row = $status->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            $result=array();
+
+            foreach($rows as $key => $value)
+            {
+                $result[]=$value['user_id_2'];
+            }
+            if(isset($result))
+                return $result;
+            else return false;    
+        }
+        else return false;
+    }
+
+    public function FollowerList($userid)
+    {
+        $sql = 'SELECT user_id_1 FROM sp_follows WHERE user_id_2='.$userid.'';
+        $status = $this->mysqli->query($sql);
+        if($status->num_rows!==0)
+        {   
+            while($row = $status->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            $result=array();
+            foreach($rows as $key => $value)
+            {
+                $result[]=$value['user_id_1'];
+            }
+            if(isset($result))
+                return $result;
+            else return false;    
+        }
+        else return false;
+    }
+
+    public function GetUserFeedPosts($userid)
+    {
+        $sql='SELECT DISTINCT S.id,user_id,S.type,content,extra,created from sp_posts S,sp_follows F WHERE 
+        S.user_id=F.user_id_2 AND user_id_1='.$userid.' order by created desc';
+        $status = $this->mysqli->query($sql);
+        if($status->num_rows!==0)
+        {   
+            while($row = $status->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            if(isset($rows))
+                return $rows;
+            else return false;    
+        }
+        else return false;
+    }
+
+    public function GetUserTimelinePosts($userid)
+    {
+        $sql='select * from sp_posts where user_id='.$userid.' order by created desc';
+        $status = $this->mysqli->query($sql);
+        if($status->num_rows!==0)
+        {   
+            while($row = $status->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            if(isset($rows))
+                return $rows;
+            else return false;    
+        }
+        else return false;
+    }
+
+    public function GetPostComments($postid)
+    {
+        $sql='select comment_owner_id,comment,C.created from sp_comments C,sp_posts P where C.post_owner_id=P.user_id and P.id='.$postid.' order by C.created';
+        $status = $this->mysqli->query($sql);
+        if($status->num_rows!==0)
+        {   
+            while($row = $status->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            if(isset($rows))
+                return $rows;
+            else return false;    
+        }
+        else return false;
+    }
+
+    public function GetPostVotes($postid)
+    {
+        $sql='select vote_owner_id,C.created from sp_votes C,sp_posts P where C.post_owner_id=P.user_id and P.id='.$postid.' order by C.created';
+        $status = $this->mysqli->query($sql);
+        if($status->num_rows!==0)
+        {   
+            while($row = $status->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            if(isset($rows))
+                return $rows;
+            else return false;    
+        }
+        else return false;
     }
 
 }

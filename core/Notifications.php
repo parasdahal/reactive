@@ -34,4 +34,14 @@
 namespace socialplus\core;
 require_once('DB.php');
 
-?>
+class Notifications
+{
+	private $DB;
+
+	public function __construct(User $user)
+	{
+		//Establish connection to the database
+		$this->DB= DB::getInstance();
+	}
+
+}
