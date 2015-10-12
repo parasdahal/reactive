@@ -36,7 +36,7 @@ $feed= new \socialplus\core\Post($user);
 //print_r($user->GetFollowers());
 
 //print_r($user->GetFollowingUsers());
-print_r($feed->UserTimeline());
+//print_r($feed->UserTimeline());
 print_r($feed->UserFeed());
 
 ?>

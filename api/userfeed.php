@@ -31,27 +31,17 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace socialplus\core;
-require_once('DB.php');
+namespace socialplus\api;
+require_once('../core/DB.php');
+require_once('../core/User.php');
+require_once('../core/Posts.php');
+include('login.php');
 
-class Comment
-{
-	private $DB;
 
-	public function __construct()
-	{
-		//Establish connection to the database
-		$this->DB= DB::getInstance();
-	}
+$feed= new \socialplus\core\Post($user);
 
-	public function GetComments($postid)
-	{
-		$comments=$this->DB->GetPostComments($postid);
-		return $comments;
-	}
+echo json_encode((($feed->UserFeed())));
 
-	public function AddComment($comment)
-	{
+?>
 
-	}
-}
+

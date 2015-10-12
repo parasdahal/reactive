@@ -33,9 +33,6 @@
 
 namespace socialplus\core;
 require_once('DB.php');
-require_once('Comment.php');
-require_once('Vote.php');
-
 class Post
 {
 	private $user_id;
@@ -54,22 +51,30 @@ class Post
 	public function UserFeed()
 	{
 		$posts=$this->DB->GetUserFeedPosts($this->user_id);
-		//to grab post comments
-		$post_comments = new Comment();
-		
-		//to grab post votes
-		$post_votes = new Vote();
-		
+
 		$feed=array();
 		$count=0;
 		foreach($posts as $post)
 		{	
 			$feed[$count]['post']=$post;
+
+			//get user for this post
+			$user=$this->DB->GetUserMeta($post['user_id']);
+			$username=$this->DB->GetUsernameById($post['user_id']);
 			//get votes for this post
 			$votes=$this->DB->GetPostVotes($post['id']);
 			//get comments for this post
 			$comments=$this->DB->GetPostComments($post['id']);
 			
+
+			//add user to feed posts
+			if($user!=false){
+				$feed[$count]['usermeta']=$user;
+				$feed[$count]['usermeta']['username']=$username['username'];
+			}
+			else
+				$feed[$count]['usermeta']=array();
+
 			//add votes to feed posts
 			if($votes!=false)
 				$feed[$count]['votes']=$votes;
@@ -90,22 +95,29 @@ class Post
 	public function UserTimeline()
 	{
 		$posts=$this->DB->GetUserTimelinePosts($this->user_id);
-		//to grab post comments
-		$post_comments = new Comment();
-		
-		//to grab post votes
-		$post_votes = new Vote();
 		
 		$feed=array();
 		$count=0;
 		foreach($posts as $post)
 		{	
 			$feed[$count]['post']=$post;
+			//get user for this post
+			$user=$this->DB->GetUserMeta($post['user_id']);
+			
+			$username=$this->DB->GetUsernameById($post['user_id']);
 			//get votes for this post
 			$votes=$this->DB->GetPostVotes($post['id']);
 			//get comments for this post
 			$comments=$this->DB->GetPostComments($post['id']);
 			
+			//add user to feed posts
+			if($user!=false){
+				$feed[$count]['usermeta']=$user;
+				$feed[$count]['usermeta']['username']=$username['username'];
+			}
+			else
+				$feed[$count]['usermeta']=array();
+
 			//add votes to feed posts
 			if($votes!=false)
 				$feed[$count]['votes']=$votes;

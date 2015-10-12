@@ -115,6 +115,33 @@ class DB
     }
 
     /**
+     * 
+     * This function retries the username from users table using user id
+     * 
+     * @param int $id Id of the user
+     * 
+     * @return array $result Array containing row of username from the table
+     */
+    public function GetUsernameById($id)
+    {
+        $sql = 'SELECT username FROM sp_users WHERE id='.$id.'';
+        $status = $this->mysqli->query($sql);
+        if($status==false)
+        {
+            return false;
+        
+        }
+        else
+        {
+            $result = $status->fetch_assoc();
+            return $result;
+            
+        }
+    }
+
+
+
+    /**
      * Update the last_sign_in feild of each user after each login
      * @param int $id Userid of the user
      *
@@ -129,6 +156,7 @@ class DB
         else return true;
 
     }
+
      /**
      * 
      * This function retries the user meta data from users_meta table 
@@ -146,16 +174,21 @@ class DB
             return false;
             
         }
-        else{
-
+        else
+        {
+            $rows=array();
             while($row = $status->fetch_assoc()) {
                 $rows[] = $row;
             }
+
             $meta=array();
-            foreach($rows as $key => $value)
-            {
-                $meta[$value['meta']]=$value['value'];
-            }
+
+            if(isset($meta))
+                foreach($rows as $key => $value)
+                {
+                    $meta[$value['meta']]=$value['value'];
+                }
+
             if(isset($meta))
                 return $meta;
             else return false;    

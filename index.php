@@ -45,7 +45,7 @@ $view->setTemplatesDirectory('./views');
  */
 $app->get('/', function () use ($app) {
     
-    $app->render('home.php');
+    $app->render('news_feed.html');
 
 });
 
