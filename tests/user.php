@@ -9,13 +9,13 @@ $newuser = new \socialplus\core\NewUser();
 
 $user = new \socialplus\core\User();
 
-// $signup=array(
-// 	'username' => 'Dolly',
-// 	'email' => 'Dolly@gmail.com',
-// 	'password' => 'demo123'
-// 	);
+$signup=array(
+	'username' => 'asdasaasdy',
+	'email' => 'asdax@gmsail.com',
+	'password' => 'demo123'
+	);
 
-//var_dump($newuser->Signup($signup));
+echo $newuser->Signup($signup);
 
 // $login=array(
 // 	'username'=>'ellen',
@@ -23,9 +23,9 @@ $user = new \socialplus\core\User();
 // 	'remember'=>1
 // 	);
 // print_r($_SESSION);
-// var_dump($user->IsLoggedIn());
+();
 
-$feed= new \socialplus\core\Post($user);
+// $feed= new \socialplus\core\Post($user);
 
 // //$user->Follow(15);
 // //var_dump($user->Unfollow(3));
@@ -36,8 +36,8 @@ $feed= new \socialplus\core\Post($user);
 
 // //print_r($user->GetFollowers());
 
-// //print_r($user->GetFollowingUsers());
-print_r($feed->UserFeed());
+// // //print_r($user->GetFollowingUsers());
+// print_r($feed->UserFeed());
 // //var_dump($user->PostComment(47,11,'Test is done using test.php'));
 
 ?>

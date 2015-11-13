@@ -33,12 +33,17 @@ var LoginBox = React.createClass({
 			return;
 	},
 
-
+    signup:function(e)
+    {
+        e.preventDefault();
+        $(location).attr('href','signup');
+    },
 	render:function()
 	{
 		return(
 
-			        
+		<div>	        
+
         <div className="content overflow-hidden">
             <div className="row">
                 <div className="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
@@ -75,17 +80,28 @@ var LoginBox = React.createClass({
                                         <button className="btn btn-block btn-primary" type="submit"><i className="si si-login pull-right"></i> Log in</button>
                                     </div>
                                 </div>
+                                Or signup for a new account.<hr/>
+                                
+                            </form>
+                            <form className="form-horizontal" action="signup">
+                            <div className="form-group">
+                                    <div className="col-xs-12 ">
+                                        <button className="btn btn-block btn-primary" type="submit"><i className="fa fa-plus pull-right" ></i> Signup</button>
+                                </div>
+                                </div>
                             </form>
                             
                         </div>
+
                     </div>
                     
                 </div>
+
             </div>
   
         </div>
         
-
+        </div>
 
 			
 

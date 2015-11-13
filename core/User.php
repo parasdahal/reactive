@@ -74,7 +74,8 @@ class User{
 	{
 		//Establish connection to the database
 		$this->DB= DB::getInstance();
-		session_start();
+		if(!isset($_SESSION))
+			session_start();
 	}
 
 	/**

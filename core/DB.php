@@ -116,11 +116,10 @@ class DB
 
     public function GetIdByUsername($username)
     {
-        $sql = 'SELECT id FROM sp_users WHERE username='.$username.'';
+        $sql = 'SELECT id FROM sp_users WHERE username="'.$username.'"';
         $status = $this->mysqli->query($sql);
-        if($status==false)
-            return false;
-        else return true;
+        $result = $status->fetch_assoc();
+            return $result['id'];
 
     }
 
@@ -257,9 +256,31 @@ class DB
         if($status==false)
             return false;
         else
+            {
+                $sql='SELECT id FROM sp_users WHERE username="'.$d['username'].'"';
+                $status = $this->mysqli->query($sql);
+                $result = $status->fetch_assoc();
+                return $result['id'];
+            }
+
+    }
+
+    public function AddMeta($user_id,$meta,$value)
+    {
+        $sql = 'INSERT INTO sp_user_meta(user_id,meta,value) 
+                                            VALUES('.$user_id.',
+                                            "'.$meta.'",
+                                            "'.$value.'"
+                                            )';
+
+        $status = $this->mysqli->query($sql);
+        if($status==false)
+            return false;
+        else
             return true;
 
     }
+
     /**
      * Checks if username in the parameter exists in the user table
      * @param int $id User ID

@@ -30,7 +30,7 @@ var Badge=React.createClass({
 		{	
 			return(
 				<div>
-				<div className="col-xs-12 col-sm-offset-3">
+				<div className="col-xs-12 col-sm-offset-4">
 				<div className="content">
 					<div className="row">
 						<div className="col-sm-6">

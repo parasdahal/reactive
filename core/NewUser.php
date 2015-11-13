@@ -131,11 +131,19 @@ class NewUser{
 		if($this->SignupValidate($signup_data)){
 			//create new user in the database
 			$create=$this->DB->CreateUser($signup_data);
-			return true;
+			return $create;
 		}
 		else
 			return $this->user_signup_error;
 
+	}
+
+	public function AddMeta($userid,$meta)
+	{
+		foreach($meta as $key => $value)
+		{
+			$this->DB->AddMeta($userid,$key,$value);
+		}
 	}
 
 }

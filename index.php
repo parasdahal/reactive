@@ -53,9 +53,20 @@ $app->get('/login', function () use ($app) {
     $app->render('login.html');
 
 });
+$app->get('/signup', function () use ($app) {
+    
+    $app->render('signup.html');
+
+});
 $app->get('/home', function () use ($app) {
     
     $app->render('news_feed.html');
+
+});
+
+$app->get('/:id', function ($id) use ($app) {
+    
+    $app->render('user.php');
 
 });
 

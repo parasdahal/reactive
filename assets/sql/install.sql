@@ -1,7 +1,64 @@
 --
 -- MySQL 5.6.24
--- Wed, 07 Oct 2015 06:01:20 +0000
+-- Fri, 13 Nov 2015 15:35:10 +0000
 --
+
+CREATE TABLE `sp_comments` (
+   `id` int(11) not null auto_increment,
+   `post_id` int(11) not null,
+   `post_owner_id` int(11) not null,
+   `comment_owner_id` int(11) not null,
+   `comment` text,
+   `created` datetime not null default CURRENT_TIMESTAMP,
+   `updated` datetime,
+   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=55;
+
+INSERT INTO `sp_comments` (`id`, `post_id`, `post_owner_id`, `comment_owner_id`, `comment`, `created`, `updated`) VALUES 
+('1', '8', '1', '1', 'Ha! this is my first comment', '2015-10-07 11:42:28', ''),
+('2', '12', '11', '1', 'Hehehehehe', '2015-10-07 11:43:27', ''),
+('3', '14', '15', '1', 'Alright!Beam me up!', '2015-10-07 12:16:37', ''),
+('4', '29', '14', '1', 'Bitch', '2015-10-12 15:21:08', ''),
+('5', '12', '13', '1', 'Go ahead and die!!', '2015-10-12 18:26:01', ''),
+('6', '28', '14', '13', 'And comment is working! :D', '2015-10-12 19:18:28', ''),
+('7', '47', '11', '11', 'Test is done using test.php', '2015-11-05 19:38:46', ''),
+('8', '47', '11', '11', 'asdadasdsad', '2015-11-05 19:49:57', ''),
+('9', '48', '11', '11', 'asdsada', '2015-11-05 20:43:31', ''),
+('12', '48', '11', '11', 'Hey man this is awesome', '2015-11-05 20:44:51', ''),
+('13', '48', '11', '11', 'Shit!', '2015-11-05 20:45:22', ''),
+('14', '49', '11', '11', 'Thats awesome man!', '2015-11-05 20:48:59', ''),
+('15', '49', '11', '11', 'Isn\'t it?', '2015-11-05 20:50:12', ''),
+('16', '49', '11', '11', 'Hey', '2015-11-05 22:01:36', ''),
+('17', '49', '11', '11', 'Whats up', '2015-11-05 22:10:50', ''),
+('18', '49', '11', '11', 'Nothing much man', '2015-11-05 22:10:55', ''),
+('19', '49', '11', '11', 'Seriously??', '2015-11-05 22:11:27', ''),
+('20', '50', '11', '11', 'Nicely Said!', '2015-11-06 18:46:36', ''),
+('21', '50', '11', '11', 'Hahahaha', '2015-11-06 18:51:55', ''),
+('22', '51', '11', '11', 'Yes it does!', '2015-11-06 18:52:09', ''),
+('23', '31', '11', '11', 'I just liked this!', '2015-11-06 19:07:44', ''),
+('24', '52', '11', '11', 'yeah', '2015-11-06 19:32:16', ''),
+('25', '51', '11', '11', 'Nice man', '2015-11-06 19:49:25', ''),
+('26', '50', '11', '11', 'Sure it was good!', '2015-11-06 19:49:34', ''),
+('27', '8', '1', '11', 'Wow!', '2015-11-06 19:49:40', ''),
+('28', '8', '1', '11', 'Looks like ages ago!', '2015-11-06 19:49:47', ''),
+('29', '45', '11', '11', 'hjfhjhjgkjhkjhk', '2015-11-06 20:03:24', ''),
+('30', '45', '11', '11', 'n,jhkj', '2015-11-06 20:03:29', ''),
+('31', '54', '11', '11', 'Great!', '2015-11-07 11:39:25', ''),
+('32', '54', '11', '11', 'Great!', '2015-11-07 11:39:29', ''),
+('35', '8', '1', '11', 'Randhir rocks!', '2015-11-07 11:41:01', ''),
+('36', '54', '11', '11', 'hi', '2015-11-07 11:50:45', ''),
+('43', '51', '11', '11', 'Great!', '2015-11-10 15:19:24', ''),
+('44', '55', '11', '11', 'kjkjhjk', '2015-11-10 15:24:20', ''),
+('45', '55', '11', '11', 'Really?', '2015-11-10 15:32:21', ''),
+('46', '56', '11', '11', 'Awesome the UI looks beautiful!', '2015-11-10 15:56:24', ''),
+('47', '57', '11', '11', 'oyeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '2015-11-10 17:21:25', ''),
+('48', '57', '11', '11', 'njkhkjj', '2015-11-10 17:21:28', ''),
+('49', '57', '11', '11', 'Seriously man', '2015-11-10 17:34:02', ''),
+('50', '55', '11', '11', 'yes', '2015-11-10 17:46:11', ''),
+('51', '57', '11', '11', 'Yep.', '2015-11-11 13:54:27', ''),
+('52', '82', '11', '11', 'Wow!', '2015-11-13 13:09:04', ''),
+('53', '82', '11', '11', 'Great!', '2015-11-13 17:21:44', ''),
+('54', '86', '11', '11', 'Great!', '2015-11-13 21:02:39', '');
 
 CREATE TABLE `sp_follows` (
    `id` int(11) not null auto_increment,
@@ -10,8 +67,47 @@ CREATE TABLE `sp_follows` (
    `type` int(1),
    `followed_on` datetime,
    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=31;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=47;
 
+INSERT INTO `sp_follows` (`id`, `user_id_1`, `user_id_2`, `type`, `followed_on`) VALUES 
+('5', '1', '10', '1', '0000-00-00 00:00:00'),
+('7', '1', '12', '1', ''),
+('8', '10', '1', '1', ''),
+('9', '10', '14', '1', ''),
+('10', '11', '13', '1', ''),
+('11', '11', '14', '1', ''),
+('12', '11', '1', '1', ''),
+('13', '12', '11', '1', ''),
+('14', '12', '14', '1', ''),
+('15', '12', '15', '1', ''),
+('16', '13', '15', '1', ''),
+('17', '13', '1', '1', ''),
+('18', '12', '1', '1', ''),
+('19', '14', '17', '1', ''),
+('20', '14', '12', '1', ''),
+('21', '18', '1', '1', ''),
+('22', '18', '12', '1', ''),
+('23', '18', '10', '1', ''),
+('24', '19', '10', '1', ''),
+('25', '19', '13', '1', ''),
+('26', '19', '15', '1', ''),
+('30', '11', '15', '1', '2015-10-07 10:47:11'),
+('31', '11', '11', '1', ''),
+('32', '1', '1', '1', ''),
+('33', '83', '11', '1', '2015-11-13 19:55:44'),
+('34', '83', '1', '1', '2015-11-13 19:55:44'),
+('35', '84', '11', '1', '2015-11-13 20:00:00'),
+('36', '84', '1', '1', '2015-11-13 20:00:00'),
+('37', '86', '11', '1', '2015-11-13 20:51:24'),
+('38', '86', '1', '1', '2015-11-13 20:51:24'),
+('39', '87', '11', '1', '2015-11-13 20:53:50'),
+('40', '87', '1', '1', '2015-11-13 20:53:50'),
+('41', '88', '11', '1', '2015-11-13 20:54:10'),
+('42', '88', '1', '1', '2015-11-13 20:54:10'),
+('43', '89', '11', '1', '2015-11-13 20:55:12'),
+('44', '89', '1', '1', '2015-11-13 20:55:12'),
+('45', '90', '11', '1', '2015-11-13 21:01:22'),
+('46', '90', '1', '1', '2015-11-13 21:01:22');
 
 CREATE TABLE `sp_posts` (
    `id` int(11) not null auto_increment,
@@ -22,8 +118,50 @@ CREATE TABLE `sp_posts` (
    `created` datetime not null default CURRENT_TIMESTAMP,
    `updated` datetime,
    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=21;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=87;
 
+INSERT INTO `sp_posts` (`id`, `user_id`, `type`, `content`, `extra`, `created`, `updated`) VALUES 
+('8', '1', '1', 'Today was a wild day, felt so great :)', '', '2015-10-06 22:06:22', '0000-00-00 00:00:00'),
+('9', '10', '1', 'Why is the world so curel? :(', '', '2015-10-06 22:06:52', '0000-00-00 00:00:00'),
+('10', '11', '1', 'Wanna hangout, guys?', '', '2015-10-06 22:07:02', '0000-00-00 00:00:00'),
+('11', '12', '1', 'Bored at home....', '', '2015-10-06 22:07:09', '0000-00-00 00:00:00'),
+('12', '13', '1', 'Gonna Jump of a bridge, thankgod I\'ve got a Bungee cord :D', '', '2015-10-06 22:07:33', '0000-00-00 00:00:00'),
+('13', '14', '1', 'Damn it I\'m so HOT', '', '2015-10-06 22:07:45', '0000-00-00 00:00:00'),
+('14', '15', '1', 'Whooooo, I rock!', '', '2015-10-06 22:07:51', '0000-00-00 00:00:00'),
+('15', '16', '1', 'I have a dream...that today Ill finally open my book :D', '', '2015-10-06 22:08:13', '0000-00-00 00:00:00'),
+('16', '17', '1', 'When will Obama serve me Dinner?? 3:D', '', '2015-10-06 22:09:15', '0000-00-00 00:00:00'),
+('17', '18', '1', 'You\'re gonna make me lonesome when you gooo...', '', '2015-10-06 22:09:30', '0000-00-00 00:00:00'),
+('18', '19', '1', 'Shooting in the dark too long, when its not right its wrong.', '', '2015-10-06 22:09:44', '0000-00-00 00:00:00'),
+('19', '20', '1', 'I love Bob Dylan.', '', '2015-10-06 22:09:52', '0000-00-00 00:00:00'),
+('20', '21', '1', 'My baby is calling.', '', '2015-10-06 22:09:59', '0000-00-00 00:00:00'),
+('21', '14', '1', 'New date feature is up!', '', '2015-10-12 13:43:10', ''),
+('22', '14', '1', 'Automated News feed Bitch!!!!!', '', '2015-10-12 14:42:13', ''),
+('23', '13', '1', 'Testing News feed bitch!!!', '', '2015-10-12 14:46:12', ''),
+('28', '14', '1', 'Live update is ON!!!', '', '2015-10-12 15:13:53', ''),
+('29', '15', '1', 'This is demo for Joseph', '', '2015-10-25 21:26:40', ''),
+('30', '14', '1', 'Tejash demo', '', '2015-11-03 19:21:37', ''),
+('31', '11', '1', 'Hurrayyy yeah!!', '', '2015-11-03 22:16:45', ''),
+('44', '11', '1', 'Hurray posting status is working!', '', '2015-11-05 18:56:57', ''),
+('45', '11', '1', 'Now the box clears itself! :D', '', '2015-11-05 18:58:14', ''),
+('47', '11', '1', 'I have propic problem :/', '', '2015-11-05 19:16:01', ''),
+('48', '11', '1', 'Yaaaay!', '', '2015-11-05 20:37:01', ''),
+('49', '11', '1', 'OK NOW we have fixed the problem of automatic likes appearing!', '', '2015-11-05 20:48:21', ''),
+('50', '11', '1', 'New Day New Beginning', '', '2015-11-06 18:46:29', ''),
+('51', '11', '1', 'Nischal Rocks', '', '2015-11-06 18:52:01', ''),
+('52', '11', '1', 'Sup!', '', '2015-11-06 19:07:57', ''),
+('53', '11', '1', 'GDFSDS', '', '2015-11-06 20:03:37', ''),
+('54', '11', '1', 'Posted!!', '', '2015-11-07 11:38:10', ''),
+('55', '11', '1', 'hii what\'sup', '', '2015-11-07 11:58:43', ''),
+('56', '11', '1', 'So looks good!', '', '2015-11-10 15:56:07', ''),
+('57', '11', '2', 'All Hail Pink Floyd!', 'assets/images/awesome.jpg', '2015-11-10 16:54:25', ''),
+('77', '11', '2', 'Just a little fish for my dinner!', 'assets/images/fish.jpg', '2015-11-13 12:58:03', ''),
+('80', '1', '2', 'The truth is always in the nature', 'assets/images/paras.jpg', '2015-11-13 13:01:37', ''),
+('81', '11', '1', 'lalallalala', '', '2015-11-13 13:03:17', ''),
+('82', '11', '2', 'This is a galaxy!', 'assets/images/galaxy.jpg', '2015-11-13 13:03:41', ''),
+('83', '1', '2', 'Adventures...', 'assets/images/DSC06437.JPG', '2015-11-13 13:12:21', ''),
+('84', '11', '1', 'Chiku rocks', '', '2015-11-13 17:21:56', ''),
+('85', '11', '2', '', 'assets/images/coolgirl.jpg', '2015-11-13 20:52:07', ''),
+('86', '11', '1', 'Well its done finally!', '', '2015-11-13 21:02:33', '');
 
 CREATE TABLE `sp_user_meta` (
    `id` int(11) not null auto_increment,
@@ -31,8 +169,58 @@ CREATE TABLE `sp_user_meta` (
    `meta` varchar(254) not null,
    `value` text,
    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=25;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=74;
 
+INSERT INTO `sp_user_meta` (`id`, `user_id`, `meta`, `value`) VALUES 
+('1', '1', 'Firstname', 'paras'),
+('2', '10', 'Firstname', 'John'),
+('3', '1', 'Lastname', 'Dahal'),
+('4', '10', 'Lastname', 'Doe'),
+('5', '11', 'Firstname', 'Ellen'),
+('6', '11', 'Lastname', 'Carter'),
+('7', '12', 'Firstname', 'Ariyana'),
+('8', '12', 'Lastname', 'Singh'),
+('9', '13', 'Firstname', 'Helen'),
+('10', '13', 'Lastname', 'McCart'),
+('11', '14', 'Firstname', 'Christopher'),
+('12', '14', 'Lastname', 'Brown'),
+('13', '15', 'Firstname', 'Chuck'),
+('14', '15', 'Lastname', 'Berry'),
+('15', '16', 'Firstname', 'Donald'),
+('16', '16', 'Lastname', 'Duck'),
+('17', '17', 'Firstname', 'Christina'),
+('18', '17', 'Lastname', 'Augustine'),
+('19', '18', 'Firstname', 'Ramona'),
+('20', '18', 'Lastname', 'King'),
+('21', '19', 'Firstname', 'William'),
+('22', '19', 'Lastname', 'Wallace'),
+('23', '20', 'Firstname', 'Danny'),
+('24', '20', 'Lastname', 'Collins'),
+('25', '11', 'propic', 'assets/images/avatar.jpg'),
+('26', '11', 'bio', 'Wild Pursuits. Dream on.'),
+('27', '14', 'propic', 'assets/images/big.jpg'),
+('28', '1', 'propic', 'assets/images/paras.jpg'),
+('29', '1', 'bio', 'Live and Let Live #peace'),
+('34', '82', 'firstname', 'Slash'),
+('35', '82', 'lastname', 'The Awesome'),
+('36', '82', 'bio', '#guitar is my life'),
+('37', '82', 'propic', 'asdasdad'),
+('38', '83', 'firstname', 'adad21313'),
+('39', '83', 'lastname', 'asdas213'),
+('40', '83', 'bio', 'sdasdasd'),
+('41', '83', 'propic', 'sadasd'),
+('42', '84', 'firstname', 'Sushant'),
+('43', '84', 'lastname', 'Adhikari'),
+('44', '84', 'bio', '#MUSIC is #LIFE'),
+('45', '84', 'propic', ''),
+('66', '89', 'firstname', 'asdadad'),
+('67', '89', 'lastname', 'adadsasdada'),
+('68', '89', 'bio', 'asdadasdad'),
+('69', '89', 'propic', '<br />\n<b>Notice</b>:  Undefined index: file in <b>/var/www/html/socialplus/api/upload.php</b> on line <b>7</b><br />\n<br />\n<b>Notice</b>:  Undefined index: file in <b>/var/www/html/socialplus/api/upload.php</b> on line <b>8</b><br />\n0'),
+('70', '90', 'firstname', 'asdsadsadsa'),
+('71', '90', 'lastname', 'asdasdsdasd'),
+('72', '90', 'bio', 'sadadsad'),
+('73', '90', 'propic', '<br />\n<b>Notice</b>:  Undefined index: file in <b>/var/www/html/socialplus/api/upload.php</b> on line <b>7</b><br />\n<br />\n<b>Notice</b>:  Undefined index: file in <b>/var/www/html/socialplus/api/upload.php</b> on line <b>8</b><br />\n0');
 
 CREATE TABLE `sp_users` (
    `id` int(11) not null auto_increment,
@@ -47,31 +235,58 @@ CREATE TABLE `sp_users` (
    PRIMARY KEY (`id`),
    UNIQUE KEY (`username`),
    UNIQUE KEY (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=22;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=91;
 
-CREATE TABLE `sp_comments`(
+INSERT INTO `sp_users` (`id`, `username`, `email`, `password`, `active`, `activation_token`, `created`, `last_sign_in`, `updated`) VALUES 
+('1', 'parasdahal', 'shree5paras@gmail.com', 'demo123', '1', '836607ca25f27105', '2015-04-10 15:27:05', '2015-11-13 13:15:13', '2015-04-10 15:27:05'),
+('10', 'johndoe', 'johndoe@gmail.com', 'demo123', '1', 'd4d0975a1ccee23c', '2015-10-06 21:34:30', '', ''),
+('11', 'ellen', 'ellen@gmail.com', 'demo123', '1', 'df6c2aaf7d209cfb', '2015-10-06 21:35:20', '2015-11-13 21:02:13', ''),
+('12', 'ariyana', 'ariyana@gmail.com', 'demo123', '1', 'c2cd5e70d8f146a8', '2015-10-06 21:36:38', '2015-10-06 22:31:12', ''),
+('13', 'hellen', 'helen@gmail.com', 'demo123', '1', 'abe0e574b44eec36', '2015-10-06 21:36:49', '', ''),
+('14', 'christopher', 'christopher@gmail.com', 'demo123', '1', 'f946a31534dff74c', '2015-10-06 21:37:06', '', ''),
+('15', 'chuck', 'chuck@gmail.com', 'demo123', '1', '0001c786c612d2cf', '2015-10-06 21:37:18', '', ''),
+('16', 'donald', 'donald@gmail.com', 'demo123', '1', 'd913c239804e3e3a', '2015-10-06 21:37:33', '', ''),
+('17', 'christina', 'christina@gmail.com', 'demo123', '1', 'a333b736ae55ae0f', '2015-10-06 21:37:52', '', ''),
+('18', 'ramona', 'ramona@gmail.com', 'demo123', '1', 'fac0f83764f14e7f', '2015-10-06 21:38:18', '', ''),
+('19', 'William', 'william@gmail.com', 'demo123', '1', '16d5544d014b5919', '2015-10-06 21:38:50', '', ''),
+('20', 'Danny', 'danny@gmail.com', 'demo123', '1', 'cb5c8045e5dae119', '2015-10-06 21:39:11', '', ''),
+('21', 'Dolly', 'Dolly@gmail.com', 'demo123', '1', '2c75a99629a397e6', '2015-10-06 21:53:46', '', ''),
+('82', 'slash', 'asda@asdas.com', 'asd21313', '1', '49d4beef25b28436', '2015-11-13 19:53:03', '', ''),
+('83', 'asdad3232213', 'asdasD@asda.asd', 'asdasdq23123', '1', '650a8fb25822e741', '2015-11-13 19:55:39', '', ''),
+('84', 'sushantadh', 'sushantadh@gmail.com', 'demo123', '1', '71b0a70576f2bec7', '2015-11-13 19:59:22', '2015-11-13 20:00:12', ''),
+('85', 'asdadadasd', 'sada@asd.asd', 'asdadasdasdasd', '1', '9bda6db46e737f09', '2015-11-13 20:49:43', '', ''),
+('86', 'Rock', 'rock@rule.com', 'Bottom', '1', 'fa33d16505b2d37f', '2015-11-13 20:51:12', '', ''),
+('87', 'asdadasda', 'asda2asd2@asda.asd', 'adasdada', '1', '7b3d4c7f64a213d8', '2015-11-13 20:52:26', '', ''),
+('88', 'adsadadada', 'asd@asdadsd.asd', 'sdasdad', '1', '7eaa9daf522345fe', '2015-11-13 20:54:00', '', ''),
+('89', 'asdasdasda', 'asda@asdada.asd', 'asdadasdada', '1', 'be776dcf2b3ee420', '2015-11-13 20:55:03', '', ''),
+('90', 'asdsadasd1231', 'asddaq@sada.asda', 'asdasdasd12312', '1', '512f5f15b869eefa', '2015-11-13 21:01:09', '', '');
 
+CREATE TABLE `sp_votes` (
    `id` int(11) not null auto_increment,
-   `post_id` int(11) not null references sp_posts(id),
+   `post_id` int(11) not null,
    `post_owner_id` int(11) not null,
-   `comment_owner_id` int(11) not null,
-   `comment` text,
-   `created` datetime not null default CURRENT_TIMESTAMP,
-   `updated` datetime,
-   PRIMARY KEY (`id`)
-
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-CREATE TABLE `sp_votes`(
-
-   `id` int(11) not null auto_increment,
-   `post_id` int(11) not null references sp_posts(id),
-   `post_owner_id` int(11) not null references sp_users(id),
-   `vote_owner_id` int(11) not null references sp_users(id),
+   `vote_owner_id` int(11) not null,
    `type` int(11),
    `created` datetime not null default CURRENT_TIMESTAMP,
    `updated` datetime,
    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=122;
 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `sp_votes` (`id`, `post_id`, `post_owner_id`, `vote_owner_id`, `type`, `created`, `updated`) VALUES 
+('2', '12', '11', '1', '1', '2015-10-07 11:43:54', ''),
+('9', '31', '11', '11', '1', '2015-11-06 19:07:36', ''),
+('10', '31', '11', '11', '1', '2015-11-06 19:07:48', ''),
+('33', '8', '1', '11', '1', '2015-11-06 19:49:49', ''),
+('44', '48', '11', '11', '1', '2015-11-06 21:17:43', ''),
+('92', '13', '14', '11', '1', '2015-11-10 17:25:59', ''),
+('96', '50', '11', '11', '1', '2015-11-10 17:42:55', ''),
+('101', '55', '11', '11', '1', '2015-11-10 22:29:25', ''),
+('103', '51', '11', '11', '1', '2015-11-10 23:12:15', ''),
+('104', '52', '11', '11', '1', '2015-11-10 23:13:57', ''),
+('106', '54', '11', '11', '1', '2015-11-10 23:25:58', ''),
+('108', '22', '14', '11', '1', '2015-11-10 23:51:19', ''),
+('113', '58', '11', '11', '1', '2015-11-13 11:31:45', ''),
+('118', '83', '1', '11', '1', '2015-11-13 13:32:33', ''),
+('119', '80', '1', '11', '1', '2015-11-13 13:39:16', ''),
+('120', '82', '11', '11', '1', '2015-11-13 17:21:41', ''),
+('121', '86', '11', '11', '1', '2015-11-13 21:02:36', '');

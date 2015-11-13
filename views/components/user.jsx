@@ -2,13 +2,16 @@
 var User=React.createClass({
 	  
 	  loadFeedFromServer: function() {
+	  	var id=this.props.id;
 	    $.ajax({
-	      url: '../api/userprofile.php',
+	      url: 'api/userprofile.php',
+	      type:'POST',
+		  data:{'id':id},
 	      dataType: 'json',
 	      cache: false,
 	      
 	      success: function(data) {
-	        this.setState({data: data});
+	      	this.setState({data: data});
 	        console.log(data);
 	      }.bind(this),
 
