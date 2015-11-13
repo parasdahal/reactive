@@ -32,19 +32,35 @@
  */
 
 namespace socialplus\api;
+
+GLOBAL $user;
+
 require_once('../core/DB.php');
 require_once('../core/User.php');
 require_once('../core/Posts.php');
 
-$user = new \socialplus\core\User();
+if(($user instanceof \socialplus\core\User)!= true)
+{
+	$user = new \socialplus\core\User();
+}
 
-$login=array(
-	'username'=>'ellen',
-	'password'=>'demo123',
-	'remember'=>1
+if(isset($_POST['username']) and isset($_POST['password']))
+{
+	$login=array(
+	'username'=>$_POST['username'],
+	'password'=>$_POST['password'],
+	'remember'=>0
 	);
+		
+	$result=$user->Login($login);
+	if(is_array($result))
+	{
+		echo json_encode($result);
+	}
+	else
+		echo 1;
+}
 
-$user->Login($login);
 
 
 ?>

@@ -1,4 +1,15 @@
 var Header= React.createClass({
+    handleLogout: function(e)
+    {
+        e.preventDefault();
+        $.ajax({
+            url:'api/logout.php',
+            success:function(response)
+            {
+                $(location).attr('href','login');
+            }
+        });
+    },
 
 	render:function(){
 
@@ -18,35 +29,58 @@ var Header= React.createClass({
 			<header id="header-navbar" className="content-mini content-mini-full">
                 <ul className="nav-header pull-right">
                     <li>
-                        <div className="btn-group">
-                            <button className="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">
-                                <i className="si si-bell"></i>
-                            </button>
-                            <ul className="dropdown-menu dropdown-menu-right">
-                                <li className="dropdown-header">Notifications</li>
-                                
-                            	<Notifications list={notifs} />
-
-                            </ul>
-                        </div>
+                        <a href="home">Home</a>
+                    </li>
+                    <li>
+                        <a href="profile">Profile</a>
+                    </li>
+                    <li>
+                        <a onClick={this.handleLogout} href="#" >Logout</a>
                     </li>
                 </ul>
                 <ul className="nav-header center-block">
                     <li>
                     <h4>SocialPlus</h4>
                     </li>
-                    <li className="header-search pull-right">
-                        <form className="form-horizontal" action="" method="post">
-                            <div className="form-material form-material-primary input-group remove-margin-t remove-margin-b">
-                                <input className="form-control" type="text" id="base-material-text" name="base-material-text" placeholder="Search.."/>
-                                <span className="input-group-addon"><i className="si si-magnifier"></i></span>
-                            </div>
-                        </form>
-                    </li>
+                    
                 </ul>
 			</header>
 
 
 			);
 	}
+});
+
+
+var NotificationItem = React.createClass({
+    render:function(){
+        return (
+            <li>
+                <a className="bg-gray-lighter" tabIndex="-1" href={this.props.link}>
+                {this.props.children}
+                </a>
+            </li>        
+        );
+    }
+
+});
+
+var Notifications = React.createClass({
+
+    render:function(){
+
+
+        return(
+            <div>
+                 {this.props.list.map(function (notif){
+                     return (
+
+                        <NotificationItem link={notif.link} key={notif.link}>{notif.value}</NotificationItem>
+                     
+                     );
+
+                 })}
+            </div>
+        );
+    }
 });

@@ -1,7 +1,7 @@
 
 var Home=React.createClass({
 	  
-	  loadCommentsFromServer: function() {
+	  loadFeedFromServer: function() {
 	    $.ajax({
 	      url: 'api/userfeed.php',
 	      dataType: 'json',
@@ -11,10 +11,6 @@ var Home=React.createClass({
 	        this.setState({data: data});
 	      }.bind(this),
 
-	      error: function(xhr, status, err) {
-	      
-	      console.error(this.props.url, status, err.toString());
-	      }.bind(this)
 	    });
 	  },
 
@@ -23,8 +19,8 @@ var Home=React.createClass({
 	  },
 
 	  componentDidMount: function() {
-	    this.loadCommentsFromServer();
-	    setInterval(this.loadCommentsFromServer, 2000);
+	    this.loadFeedFromServer();
+	    setInterval(this.loadFeedFromServer, 1000);
 	  },
 		
 		render:function()
@@ -32,6 +28,7 @@ var Home=React.createClass({
 			return(
 				<div>
 					<Header/>
+					<StatusBox data={this.state.data} />
 					<Feed news={this.state.data}/>
 				</div>
 			);

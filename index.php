@@ -45,9 +45,27 @@ $view->setTemplatesDirectory('./views');
  */
 $app->get('/', function () use ($app) {
     
+    $app->render('login.html');
+
+});
+$app->get('/login', function () use ($app) {
+    
+    $app->render('login.html');
+
+});
+$app->get('/home', function () use ($app) {
+    
     $app->render('news_feed.html');
 
 });
+
+$app->get('/profile', function() use ($app) {
+
+	//$app->render('user.php?username='.$args['username']);
+	$app->render('profile.html');
+});
+
+
 
 $app->run();
 

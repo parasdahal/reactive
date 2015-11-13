@@ -74,6 +74,7 @@ class User{
 	{
 		//Establish connection to the database
 		$this->DB= DB::getInstance();
+		session_start();
 	}
 
 	/**
@@ -94,7 +95,6 @@ class User{
 
 		//Create Cookie for two weeks
 		session_set_cookie_params(2*7*24*60*60);
-		session_start();
 		
 		//If no error, store user information in the session
 		if($error==false)
@@ -103,6 +103,7 @@ class User{
 			$_SESSION['user']=$username;
 			$_SESSION['id'] = $id;
 			$_SESSION['remember'] = $remember;
+
 
 			//Store remember info in the cookie
 			setcookie('SocialPlusLogin',$remember);
@@ -172,7 +173,7 @@ class User{
 			
 			//set user_meta_data in Class variable
 			$this->user_meta_data=$this->DB->GetUserMeta($id);
-			
+			$_SESSION['meta']=$this->user_meta_data;
 			//Login Successful
 			return true;
 		}
@@ -225,12 +226,8 @@ class User{
 			//find id of the current user
 			$this_user_id=$this->user_data['id'];
 
-			//check if we are trying to follow ourself
-			if($user_id==$this_user_id)
-			{
-				$this->user_follow_error[]='You are trying to follow yourself!';
-			}
-			else{
+			
+			
 					//check if user already follows the other user
 					if($this->DB->CheckIfFollows($this_user_id,$user_id))
 					{
@@ -242,7 +239,7 @@ class User{
 						if($followed==false)
 							$this->user_follow_error[]='Could not follow!'; //something went wrong
 					}
-			}
+			
 		}
 		else{
 			//Other user id doesnt exist in the database
@@ -254,6 +251,36 @@ class User{
 			return true;
 		}
 		else return $this->user_follow_error;
+	}
+
+	public function PostStatus($type,$content,$extra)
+	{
+		$id=$_SESSION['id'];
+		$success=$this->DB->PostStatus($id,$type,$content,$extra);
+		if($success)
+			return true;
+		else
+			return false;
+	}
+
+	public function PostComment($postid,$ownerid,$comment)
+	{
+		$id=$_SESSION['id'];
+		$success=$this->DB->PostComment($postid,$ownerid,$id,$comment);
+		if($success)
+			return true;
+		else
+			return false;
+	}
+
+	public function Vote($postid,$ownerid)
+	{
+		$id=$_SESSION['id'];
+		$success=$this->DB->Vote($postid,$ownerid,$id);
+		if($success)
+			return true;
+		else
+			return false;
 	}
 
 
@@ -304,14 +331,47 @@ class User{
 
 	public function GetFollowingUsers()
 	{
-		$following=$this->DB->FollowingList($this->user_data['id']);
+		$following=$this->DB->FollowingList($_SESSION['id']);
 		return $following;
+	}
+	public function GetIdByUsername($username)
+	{
+		return $this->DB->GetIdByUsername($username);
+		
 	}
 
 	public function GetFollowers()
 	{
-		$followers=$this->DB->FollowerList($this->user_data['id']);
+		$followers=$this->DB->FollowerList($_SESSION['id']);
 		return $followers;
+	}
+
+	public function UserBadge($id)
+	{
+		$badge=array();
+
+		$user_meta_data=$this->DB->GetUserMeta($id);
+		$badge['username']=$this->DB->GetUsernameById($id);
+		$badge['propic']=$user_meta_data['propic'];
+		$badge['fullname']=$user_meta_data['Firstname'].' '.$user_meta_data['Lastname'];
+		$badge['bio']=$user_meta_data['bio'];
+		$badge['followers']=count($this->GetFollowers());
+		$badge['following']=count($this->GetFollowingUsers());
+
+		return $badge;
+	}
+
+	public function CheckIfVoted($postid,$ownerid)
+	{
+		$user_id=$_SESSION['id'];
+		$voted=$this->DB->CheckIfVoted($postid,$ownerid,$user_id);
+		return $voted;
+	}
+	public function Unvote($postid,$ownerid)
+	{
+		$user_id=$_SESSION['id'];
+		$voted=$this->DB->Unvote($postid,$ownerid,$user_id);
+		return $voted;
 	}
 	
 

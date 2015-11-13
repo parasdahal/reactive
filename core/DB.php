@@ -114,6 +114,16 @@ class DB
         }
     }
 
+    public function GetIdByUsername($username)
+    {
+        $sql = 'SELECT id FROM sp_users WHERE username='.$username.'';
+        $status = $this->mysqli->query($sql);
+        if($status==false)
+            return false;
+        else return true;
+
+    }
+
     /**
      * 
      * This function retries the username from users table using user id
@@ -382,7 +392,7 @@ class DB
 
     public function GetPostComments($postid)
     {
-        $sql='select comment_owner_id,comment,C.created from sp_comments C,sp_posts P where C.post_owner_id=P.user_id and P.id='.$postid.' order by C.created';
+        $sql='select comment_owner_id,comment,created from sp_comments where post_id='.$postid.' order by created';
         $status = $this->mysqli->query($sql);
         if($status->num_rows!==0)
         {   
@@ -398,7 +408,7 @@ class DB
 
     public function GetPostVotes($postid)
     {
-        $sql='select vote_owner_id,C.created from sp_votes C,sp_posts P where C.post_owner_id=P.user_id and P.id='.$postid.' order by C.created';
+        $sql='select vote_owner_id,created from sp_votes where post_id='.$postid.' order by created';
         $status = $this->mysqli->query($sql);
         if($status->num_rows!==0)
         {   
@@ -411,5 +421,91 @@ class DB
         }
         else return false;
     }
+    /**
+     * Posts a status update for the user with user id
+     * @param int userid
+     * @param int type of the post, 1 for status, 2 for picture
+     * @param string content of the status
+     * @param string extra info related to the status 
+     * @return Boolean True if successful, false otherwise
+     */
+    public function PostStatus($id,$type,$content,$extra)
+    {
 
+        $sql = 'INSERT INTO sp_posts(user_id,type,content,extra,created) VALUES('.$id.','.$type.',"'.$content.'","'.$extra.'",NOW())';
+
+        $status = $this->mysqli->query($sql);
+        if($status==false)
+            return false;
+        else
+            return true;
+
+    }
+    /**
+     * Posts a comment for the user with user id
+     * @param int userid
+     * @param int type of the post, 1 for status, 2 for picture
+     * @param string content of the status
+     * @param string extra info related to the status 
+     * @return Boolean True if successful, false otherwise
+     */
+    public function PostComment($postid,$ownerid,$id,$comment)
+    {
+
+        $sql = 'INSERT INTO sp_comments(post_id,post_owner_id,comment_owner_id,comment,created) VALUES('.$postid.','.$ownerid.',"'.$id.'","'.$comment.'",NOW())';
+
+        $status = $this->mysqli->query($sql);
+        if($status==false)
+            return false;
+        else
+            return true;
+
+    }
+
+    /**
+     * Posts a comment for the user with user id
+     * @param int userid
+     * @param int type of the post, 1 for status, 2 for picture
+     * @param string content of the status
+     * @param string extra info related to the status 
+     * @return Boolean True if successful, false otherwise
+     */
+    public function Vote($postid,$ownerid,$id)
+    {
+
+        $sql = 'INSERT INTO sp_votes(post_id,post_owner_id,vote_owner_id,type,created) VALUES('.$postid.','.$ownerid.',"'.$id.'","1",NOW())';
+
+        $status = $this->mysqli->query($sql);
+        if($status==false)
+            return false;
+        else
+            return true;
+
+    }
+
+    public function Unvote($postid,$ownerid,$id)
+    {
+
+        $sql = 'DELETE FROM sp_votes WHERE post_id='.$postid.' AND post_owner_id='.$ownerid.' AND vote_owner_id='.$id;
+
+        $status = $this->mysqli->query($sql);
+        if($status==false)
+            return false;
+        else
+            return true;
+
+    }
+
+    public function CheckIfVoted($postid,$ownerid,$id)
+    {
+
+        $sql='SELECT * FROM sp_votes WHERE post_id='.$postid.' AND vote_owner_id='.$id.' AND post_owner_id='.$ownerid;
+        
+        $status = $this->mysqli->query($sql);
+        if($status->num_rows!==0)
+            return true;
+        else
+            return false;
+
+    }
 }

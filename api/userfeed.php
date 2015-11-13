@@ -37,10 +37,9 @@ require_once('../core/User.php');
 require_once('../core/Posts.php');
 include('login.php');
 
-
 $feed= new \socialplus\core\Post($user);
 
-echo json_encode((($feed->UserFeed())));
+echo json_encode($feed->UserFeed());
 
 ?>
 

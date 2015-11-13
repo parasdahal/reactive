@@ -41,8 +41,8 @@ class Post
 
 	public function __construct(User $user)
 	{
-		//Get user id
-		$this->user_id=$user->user_data['id'];
+		
+		$this->user_id=$_SESSION['id'];
 		
 		//Establish connection to the database
 		$this->DB= DB::getInstance();
@@ -77,16 +77,39 @@ class Post
 
 			//add votes to feed posts
 			if($votes!=false)
-				$feed[$count]['votes']=$votes;
+				{
+					$feed[$count]['votes']=$votes;
+					$counter=0;
+					foreach($feed[$count]['votes'] as $vote)
+					{
+						$meta=$this->DB->GetUserMeta($vote['vote_owner_id']);
+						$name=$this->DB->GetUsernameById($vote['vote_owner_id']);
+
+						$feed[$count]['votes'][$counter]['usermeta']=$meta;
+						$feed[$count]['votes'][$counter]['usermeta']['username']=$name['username'];
+						$counter++;
+					}
+				}
 			else
 				$feed[$count]['votes']=array();
 
 			//add comments to feed votes
-			if($comments!=false)
+			if($comments!=false){
 				$feed[$count]['comments']=$comments;
+				$counter=0;
+				foreach($feed[$count]['comments'] as $comment)
+					{
+						$meta=$this->DB->GetUserMeta($comment['comment_owner_id']);
+						$name=$this->DB->GetUsernameById($comment['comment_owner_id']);
+
+						$feed[$count]['comments'][$counter]['usermeta']=$meta;
+						$feed[$count]['comments'][$counter]['usermeta']['username']=$name['username'];
+						$counter++;
+					}
+			}
 			else
 				$feed[$count]['comments']=array();
-			
+				
 			$count++;
 		}
 		return $feed;
@@ -101,15 +124,16 @@ class Post
 		foreach($posts as $post)
 		{	
 			$feed[$count]['post']=$post;
+
 			//get user for this post
 			$user=$this->DB->GetUserMeta($post['user_id']);
-			
 			$username=$this->DB->GetUsernameById($post['user_id']);
 			//get votes for this post
 			$votes=$this->DB->GetPostVotes($post['id']);
 			//get comments for this post
 			$comments=$this->DB->GetPostComments($post['id']);
 			
+
 			//add user to feed posts
 			if($user!=false){
 				$feed[$count]['usermeta']=$user;
@@ -120,19 +144,43 @@ class Post
 
 			//add votes to feed posts
 			if($votes!=false)
-				$feed[$count]['votes']=$votes;
+				{
+					$feed[$count]['votes']=$votes;
+					$counter=0;
+					foreach($feed[$count]['votes'] as $vote)
+					{
+						$meta=$this->DB->GetUserMeta($vote['vote_owner_id']);
+						$name=$this->DB->GetUsernameById($vote['vote_owner_id']);
+
+						$feed[$count]['votes'][$counter]['usermeta']=$meta;
+						$feed[$count]['votes'][$counter]['usermeta']['username']=$name['username'];
+						$counter++;
+					}
+				}
 			else
 				$feed[$count]['votes']=array();
 
 			//add comments to feed votes
-			if($comments!=false)
+			if($comments!=false){
 				$feed[$count]['comments']=$comments;
+				$counter=0;
+				foreach($feed[$count]['comments'] as $comment)
+					{
+						$meta=$this->DB->GetUserMeta($comment['comment_owner_id']);
+						$name=$this->DB->GetUsernameById($comment['comment_owner_id']);
+
+						$feed[$count]['comments'][$counter]['usermeta']=$meta;
+						$feed[$count]['comments'][$counter]['usermeta']['username']=$name['username'];
+						$counter++;
+					}
+			}
 			else
 				$feed[$count]['comments']=array();
-			
+				
 			$count++;
 		}
 		return $feed;
+		
 	}
 
 

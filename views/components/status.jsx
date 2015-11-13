@@ -28,27 +28,47 @@ var Status= React.createClass({
     },
  
     render:function(){
+        var photo;
+        if(this.props.list.post.extra)
+        { 
+            photo= <Photo data= {this.props.list.post.extra}/>;
 
-		return (
-				<div className="row">
-					<div className="col-sm-6">
-                            <div className="block">
-                                <div className="block-header">
-                               <a href={"user/"+this.props.list.usermeta.username}>
-                                    <span className="block-title inline">{this.props.list.usermeta.Firstname+' '+this.props.list.usermeta.Lastname}</span>
+        }
+        else{
+            photo='';
+        }
+        return (
+                    <div>
+                            <div className="block-header ">
+                            
+                                <img className="img-avatar img-avatar32 pull-left" src={this.props.list.usermeta.propic} />
+            	                <a href={"user/"+this.props.list.usermeta.username} style={{"marginLeft":"10px","marginTop":"10px"}}>
+                                    <span className=" font-w700">{'  '+this.props.list.usermeta.Firstname+' '+this.props.list.usermeta.Lastname}</span>
                                 </a>    
                                     <span className="inline pull-right">{this.timeToRelativeTime(this.props.list.post.created)}</span>
-                                </div>
-                                <div className="block-content">
-                                    <p>{this.props.list.post.content}</p>
-                                </div>
                             </div>
-                        </div>
-                  	</div>
-		);
+                        <div className="block-content">
+                        <p style={{"marginTop":"-20px"}}>{this.props.list.post.content}</p>
+                        {photo}
+                            
+                        </div> 
+                    </div>
+                    
+		      );
 	}
-
-   
 
 });
 
+var Photo=React.createClass({
+
+    render:function()
+    {
+        
+            return(
+                <div>
+                    <img className="img-responsive" src={this.props.data} />
+                </div>
+            );
+
+    }
+})
