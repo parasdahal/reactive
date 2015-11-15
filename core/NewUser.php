@@ -84,6 +84,7 @@ class NewUser{
 			$this->user_signup_error[]='Your email is not valid!';
 		}
 
+
 		if($this->DB->CheckIfEmailExists($signup_data['email']))
 		{
 			$this->user_signup_error[]='This email is already in use!';	
