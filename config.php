@@ -19,7 +19,7 @@ class Config
 {
 	public $DB_HOST='localhost';
 	public $DB_USER='root';
-	public $DB_PASSWORD='P@ssw0rd';
+	public $DB_PASSWORD='';
 	public $DB_DATABASE='socialplus';
 	
 }
